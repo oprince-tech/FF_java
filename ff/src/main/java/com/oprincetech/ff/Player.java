@@ -21,12 +21,10 @@ class Player implements Comparable<Player> {
   JSONObject playerInfoObj;
   JSONObject playerPoolEntryObj;
   JSONArray statsArray;
-  // Position position;
+  Position position;
 
-  Dictionary<Integer, String> POSITIONIDS = new Hashtable<Integer, String>();
-  Dictionary<Integer, String> SLOTIDS = new Hashtable<Integer, String>();
-
-  public Player() {}
+  static final Dictionary<Integer, String> POSITIONIDS = new Hashtable<Integer, String>();
+  static final Dictionary<Integer, String> SLOTIDS = new Hashtable<Integer, String>();
 
   public Player(JSONObject entry) {
     Long long_slot_id = (Long) entry.get("lineupSlotId");
@@ -35,10 +33,24 @@ class Player implements Comparable<Player> {
     playerInfoObj = (JSONObject) playerPoolEntryObj.get("player");
     statsArray = (JSONArray) playerInfoObj.get("stats");
     playerId = (Long) entry.get("playerId");
-    generatePlayerInfo();
-    reKeySlotId();
-    generatePosition();
-    generateSlot();
+  }
+
+  static {
+    POSITIONIDS.put(1, "QB");
+    POSITIONIDS.put(2, "RB");
+    POSITIONIDS.put(3, "WR");
+    POSITIONIDS.put(4, "TE");
+    POSITIONIDS.put(5, "K");
+    POSITIONIDS.put(16, "DST");
+    SLOTIDS.put(0, "QB");
+    SLOTIDS.put(2, "RB");
+    SLOTIDS.put(4, "WR");
+    SLOTIDS.put(6, "TE");
+    SLOTIDS.put(7, "FLX");
+    SLOTIDS.put(16, "DST");
+    SLOTIDS.put(17, "K");
+    SLOTIDS.put(20, "B");
+    SLOTIDS.put(21, "IR");
   }
 
   public void reKeySlotId() {
@@ -56,74 +68,28 @@ class Player implements Comparable<Player> {
 
   public void generatePosition() {
     int int_pos_id = Math.toIntExact(pos_id);
-    POSITIONIDS.put(1, "QB");
-    POSITIONIDS.put(2, "RB");
-    POSITIONIDS.put(3, "WR");
-    POSITIONIDS.put(4, "TE");
-    POSITIONIDS.put(5, "K");
-    POSITIONIDS.put(16, "DST");
     pos = POSITIONIDS.get(int_pos_id);
     if (pos == "QB") {
-      Position position = new QB();
-      position.statsArray = statsArray;
-      position.generateGeneralStats();
-      proj = position.longproj;
-      score = position.longscore;
-      QB qb = (QB) position;
-      qb.generatePositionStats();
+      position = new QB();
     } else if (pos == "RB") {
-      Position position = new RB();
-      position.statsArray = statsArray;
-      position.generateGeneralStats();
-      proj = position.longproj;
-      score = position.longscore;
-      RB rb = (RB) position;
-      rb.generatePositionStats();
+      position = new RB();
     } else if (pos == "WR") {
-      Position position = new WR();
-      position.statsArray = statsArray;
-      position.generateGeneralStats();
-      proj = position.longproj;
-      score = position.longscore;
-      WR wr = (WR) position;
-      wr.generatePositionStats();
+      position = new WR();
     } else if (pos == "TE") {
-      Position position = new TE();
-      position.statsArray = statsArray;
-      position.generateGeneralStats();
-      proj = position.longproj;
-      score = position.longscore;
-      TE te = (TE) position;
-      te.generatePositionStats();
+      position = new TE();
     } else if (pos == "K") {
-      Position position = new K();
-      position.statsArray = statsArray;
-      position.generateGeneralStats();
-      proj = position.longproj;
-      score = position.longscore;
-      K k = (K) position;
-      k.generatePositionStats();
+      position = new K();
     } else if (pos == "DST") {
-      Position position = new DST();
-      position.statsArray = statsArray;
-      position.generateGeneralStats();
-      proj = position.longproj;
-      score = position.longscore;
-      DST dst = (DST) position;
-      dst.generatePositionStats();
+      position = new DST();
     }
+    position.statsArray = statsArray;
+    position.generateGeneralStats();
+    proj = position.longproj;
+    score = position.longscore;
+    position.generatePositionStats();
   }
 
   public void generateSlot() {
-    SLOTIDS.put(0, "QB");
-    SLOTIDS.put(2, "RB");
-    SLOTIDS.put(4, "WR");
-    SLOTIDS.put(6, "TE");
-    SLOTIDS.put(7, "FLX");
-    SLOTIDS.put(16, "DST");
-    SLOTIDS.put(17, "K");
-    SLOTIDS.put(20, "B");
-    SLOTIDS.put(21, "IR");
     slot = SLOTIDS.get(slot_id);
   }
 
