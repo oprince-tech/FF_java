@@ -21,6 +21,10 @@ class Roster {
     for (int i = 0; i < entries.size(); i++) {
       entry = (JSONObject) entries.get(i);
       Player player = new Player(entry);
+      player.generatePlayerInfo();
+      player.reKeySlotId();
+      player.generatePosition();
+      player.generateSlot();
       players.add(player);
     }
   }

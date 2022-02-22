@@ -3,7 +3,7 @@ package com.oprincetech.ff;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-abstract class Position {
+public abstract class Position {
 
   JSONArray statsArray;
   Double games_played;
