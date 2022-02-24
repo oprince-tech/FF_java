@@ -1,5 +1,6 @@
 package com.oprincetech.ff;
 
+import java.text.DecimalFormat;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -10,12 +11,12 @@ public abstract class Position {
   Double fpts_avg;
   Double fpts_total;
   JSONObject stats_listings;
-  Double score;
-  Double proj;
-  Long longproj;
-  Long longscore;
+  Double projDouble;
+  Double scoreDouble;
 
   Position() {}
+
+  DecimalFormat df = new DecimalFormat("###.#");
 
   public abstract void generatePositionStats();
 
@@ -33,12 +34,14 @@ public abstract class Position {
       if (statsObjScoringPeriod == League.queryWeek) {
         Long statSourceId = (Long) statsObj.get("statSourceId");
         if (statSourceId == 0) {
-          score = (Double) statsObj.get("appliedTotal");
-          longscore = (Long) Math.round(score);
+          Double score = (Double) statsObj.get("appliedTotal");
+          String scoreString = df.format(score);
+          scoreDouble = Double.parseDouble(scoreString);
         } else if (statSourceId == 1) {
           if (statsObj.containsKey("appliedTotal")) {
-            proj = (Double) statsObj.get("appliedTotal");
-            longproj = (Long) Math.round(proj);
+            Double proj = (Double) statsObj.get("appliedTotal");
+            String projString = df.format(proj);
+            projDouble = Double.parseDouble(projString);
           }
         }
       }

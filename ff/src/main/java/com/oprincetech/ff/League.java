@@ -11,9 +11,11 @@ class League {
   JSONArray scheduleJson;
   JSONArray teamsJson;
   JSONObject teamJson;
+  Schedule schedule;
   Long leagueId;
   Long seasonId;
   Long scoringPeriodId;
+  Long opponentTeamId;
   ArrayList<Team> teams = new ArrayList<Team>();
   static int queryWeek;
   static int querySeason;
@@ -26,6 +28,11 @@ class League {
     scoringPeriodId = (Long) jsonData.get("scoringPeriodId");
     scheduleJson = (JSONArray) jsonData.get("schedule");
     teamsJson = (JSONArray) jsonData.get("teams");
+  }
+
+  public void generateSchedule() {
+    schedule = new Schedule(scheduleJson);
+    schedule.generateMatchups();
   }
 
   public void generateTeams() {

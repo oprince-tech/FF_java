@@ -36,7 +36,7 @@ class Roster {
   }
 
   public void printPlayers() {
-    System.out.println("Slot\tPos\tPlayer\t\t\tProj\tScore");
+    System.out.println("Slot\tPos\tPlayer\t\tProj\tScore");
     System.out.println("=============================================");
     for (Player player : players) {
       player.printPlayerInfo();

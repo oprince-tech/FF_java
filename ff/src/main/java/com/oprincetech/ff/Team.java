@@ -23,7 +23,7 @@ class Team {
     currentSimulationResults =
       (JSONObject) team.get("currentSimulationResults");
     rank = (Long) currentSimulationResults.get("rank");
-    playoffPct = (double) currentSimulationResults.get("playoffPct");
+    playoffPct = (double) currentSimulationResults.get("playoffPct") * 100;
     roster = (JSONObject) team.get("roster");
     abbrev = (String) team.get("abbrev");
     JSONObject recordJson = (JSONObject) currentSimulationResults.get(

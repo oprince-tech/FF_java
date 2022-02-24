@@ -1,6 +1,5 @@
 package com.oprincetech.ff;
 
-import java.util.Dictionary;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import org.json.simple.JSONObject;
@@ -19,6 +18,7 @@ public class App {
     int teamId = 9;
     Long longTeamId = Long.valueOf(teamId);
     int week = 8;
+    Boolean showMatchup = true;
 
     FileManager fileManager = new FileManager(leagueId, week, season);
     fileManager.generateFilenamePath();
@@ -29,15 +29,49 @@ public class App {
     League league = new League(jsonData, week, season);
     league.generateTeams();
     league.generateTeamInfo();
+    league.generateSchedule();
 
     Team team = league.getTeamById(longTeamId);
+    Team oppTeam;
+    Matchup matchup;
 
     Roster roster = team.team_roster;
     roster.generatePlayers();
     roster.sortRosterBySlotId();
+
+    if (showMatchup) {
+      matchup = league.schedule.getCurrentMatchupByTeamId(teamId);
+      if (teamId == matchup.homeTeamId) {
+        oppTeam = league.getTeamById(matchup.awayTeamId);
+      } else {
+        oppTeam = league.getTeamById(matchup.homeTeamId);
+      }
+      Roster oppRoster = oppTeam.team_roster;
+      oppRoster.generatePlayers();
+      oppRoster.sortRosterBySlotId();
+
+      matchup.printMatchupTeamInfo(team, oppTeam);
+      matchup.printMatchupPlayers(team, oppTeam);
+    } else {
+      team.printTeamInfo();
+      roster.printPlayers();
+    }
+    
+ 
     // Print to console
-    team.printTeamInfo();
-    roster.printPlayers();
+
+      // team.printTeamInfo();
+      // team.printPlayers();
+    
+    // if (matchup) {
+    //   Matchup currentMatchup = league.getCurrentMatchupById(teamId);
+      // int opponentId = league.getOpponentById(teamId);
+      // league.printTeamsInfo(teamId, opponentId);
+      // league.printMatchup();
+    // } else {
+      // team.printTeamInfo();
+      // roster.printPlayers();
+    // }
   }
 
   public static void parseArgs() {

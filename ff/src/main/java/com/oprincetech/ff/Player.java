@@ -16,12 +16,15 @@ class Player implements Comparable<Player> {
   String slot;
   String lastName;
   String firstName;
-  Long proj;
-  Long score;
+  Double proj;
+  Double score;
   JSONObject playerInfoObj;
   JSONObject playerPoolEntryObj;
   JSONArray statsArray;
   Position position;
+  Boolean injured = false;
+  Boolean starting = false;
+  Boolean rosterLocked;
 
   static final Dictionary<Integer, String> POSITIONIDS = new Hashtable<Integer, String>();
   static final Dictionary<Integer, String> SLOTIDS = new Hashtable<Integer, String>();
@@ -60,6 +63,8 @@ class Player implements Comparable<Player> {
   }
 
   public void generatePlayerInfo() {
+    rosterLocked = (Boolean) playerPoolEntryObj.get("rosterLocked");
+    injured = (Boolean) playerInfoObj.get("injured");
     injuryStatus = (String) playerInfoObj.get("injuryStatus");
     firstName = (String) playerInfoObj.get("firstName");
     lastName = (String) playerInfoObj.get("lastName");
@@ -84,24 +89,29 @@ class Player implements Comparable<Player> {
     }
     position.statsArray = statsArray;
     position.generateGeneralStats();
-    proj = position.longproj;
-    score = position.longscore;
+    proj = position.projDouble;
+    score = position.scoreDouble;
     position.generatePositionStats();
   }
 
   public void generateSlot() {
     slot = SLOTIDS.get(slot_id);
+    if (slot != "B") {
+      starting = true;
+    }
   }
 
-  // Comparse and sort by Position ID
+  // Compares and sort by Position ID
   @Override
   public int compareTo(Player obj) {
     return this.slot_id - obj.slot_id;
   }
 
   public void printPlayerInfo() {
-    System.out.println(
-      slot + "\t" + pos + "\t" + lastName + "   \t\t" + proj + "\t" + score
-    );
+    String foo = String.format("%s\t%s\t%-10s\t%s\t%s", slot, pos, lastName, proj, score);
+    System.out.println(foo);
+    // System.out.println(
+    //   slot + "\t" + pos + "\t" + lastName + "   \t\t" + proj + "\t" + score
+    // );
   }
 }
